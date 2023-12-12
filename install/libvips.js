@@ -113,7 +113,13 @@ const extractTarball = function (tarPath, platformAndArch) {
 };
 
 try {
-  const useGlobalLibvips = libvips.useGlobalLibvips();
+  let useGlobalLibvips
+  try{
+    useGlobalLibvips = libvips.useGlobalLibvips();
+  } catch(err) {
+    libvips.log("useGlobalLibvips");
+    libvips.log(err);
+  }
 
   if (useGlobalLibvips) {
     const globalLibvipsVersion = libvips.globalLibvipsVersion();
@@ -217,5 +223,7 @@ try {
   }
 } catch (err) {
   libvips.log("outer catch")
+  console.log(err);
+  console.trace();
   fail(err);
 }
