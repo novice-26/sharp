@@ -105,6 +105,7 @@ const extractTarball = function (tarPath, platformAndArch) {
         if (/unexpected end of file/.test(err.message)) {
           fail(new Error(`Please delete ${tarPath} as it is not a valid tarball`));
         }
+        libvips.log("Error versionedVendorPath" + versionedVendorPath + "Tarpath" + tarPath)
         fail(err);
       }
     }
@@ -170,6 +171,7 @@ try {
       libvips.log(`Downloading ${url}`);
       simpleGet({ url: url, agent: agent(libvips.log) }, function (err, response) {
         if (err) {
+          libvips.log("simple get")
           fail(err);
         } else if (response.statusCode === 404) {
           fail(new Error(`Prebuilt libvips ${minimumLibvipsVersion} binaries are not yet available for ${platformAndArch}`));
@@ -194,6 +196,8 @@ try {
               try {
                 fs.unlinkSync(tarPathTemp);
               } catch (e) {}
+
+              libvips.log("tmpFileStream")
               fail(err);
             })
             .on('close', function () {
@@ -212,5 +216,6 @@ try {
     }
   }
 } catch (err) {
+  libvips.log("outer catch")
   fail(err);
 }
